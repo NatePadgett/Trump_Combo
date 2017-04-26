@@ -1,35 +1,34 @@
-import sys
+import random
 
-#create a dictionary to store the count of each word
-wordcount = {}
+#Open four files to work with
+TRUMPS = open('TRUMPS.txt')
+TimeTRUMPS = open('Trump_Truth_Falsehood_Interview.txt')
+TRUMPS_Frequent = open('TRUMPS_Words2.txt')
+TimeTRUMPS_Frequent = open('Trumps_Interview_Words2.txt')
 
-#store file from command line in variable file
-file = sys.stdin
+#create a list for storing lines from the Trump interviews
+TRUMPSlist = []
 
-#loop over the contents of the file and split it into words
-for line in file:
+#create a list of all frequently used words from both word frequency files
+TRUMPS_Frequent_words = []
+
+#loop over lines in both frequency files and add lines to frequency list
+for line in TRUMPS_Frequent or TimeTRUMPS_Frequent:
 	line = line.strip()
-	words = line.split()
+	TRUMPS_Frequent_words.append(line)
 
-	#loop over the contents of words and parse out individual words in it 
-	#check if new variable word is not in the dictionary. 
-	#if so, mark it as appearing once. Add 1 for each occurance of the word. 
-	for word in words:
-		if word not in wordcount: 
-			wordcount[word] = 1
-		else:
-			wordcount[word] += 1
+#loop over lines in both interview files
+for line in TRUMPS or TimeTRUMPS:
+	line = line.strip()
+	#loop over words in frequency list
+	for word in TRUMPS_Frequent_words:
+		#if a word in the frequency list appears in a line in the interview files
+		#all the line to TRUMPSlist
+		if word in line:		
+			TRUMPSlist.append(line)
 
-print wordcount
+#store a random sampling of lines in TRUMPSlist
+sampling = random.sample(TRUMPSlist, 10)
 
-#sort dictrionary keys (words) by value, largest to smallest
-wordtuple = [(word, count) for count, word in sorted
-		([(count, word) for word, count in wordcount.items()], reverse=True
-	)
-]
-
-#pair down the contents to make the results manageable. Developer changes 
-#the boundaries
-for word, count in wordtuple:
-	if count < 150 and count > 30:
-		print word #+ " : " + str(count)
+#print the sampled lines as strings
+print '\n'. join(sampling)
